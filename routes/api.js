@@ -61,6 +61,24 @@ module.exports = (app, db) => {
         .catch(err => console.error(`Failed to insert item: ${err}`));
     })
 
+    .put((req, res) => {
+      const { board } = req.params;
+
+      const collection = db.collection(board);
+
+      collection
+        .findOneAndUpdate(
+          { _id: ObjectId(req.body.report_id) },
+          { $set: { reported: true } }
+        )
+        .then(() => {
+          res.send("success");
+        })
+        .catch(err =>
+          console.error(`Failed to find and update document: ${err}`)
+        );
+    })
+
     .delete((req, res) => {
       const { board } = req.params;
 
@@ -126,10 +144,30 @@ module.exports = (app, db) => {
           console.error(`Failed to find and update document: ${err}`)
         );
     })
-    .delete((req, res) => {
+
+    .put((req, res) => {
       const { board } = req.params;
 
-      console.log(req.body);
+      const collection = db.collection(board);
+
+      collection
+        .findOneAndUpdate(
+          {
+            _id: ObjectId(req.body.thread_id),
+            "replies._id": ObjectId(req.body.reply_id)
+          },
+          { $set: { "replies.$.reported": true } }
+        )
+        .then(() => {
+          res.send("success");
+        })
+        .catch(err =>
+          console.error(`Failed to find and update document: ${err}`)
+        );
+    })
+
+    .delete((req, res) => {
+      const { board } = req.params;
 
       const collection = db.collection(board);
 
