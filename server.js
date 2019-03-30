@@ -44,11 +44,11 @@ const client = new MongoClient(MONGODB_CONNECTION_STRING, {
   useNewUrlParser: true
 });
 client.connect(err => {
-  const collection = client.db("messageboard").collection("messages");
+  const db = client.db("messageboard");
   // perform actions on the collection object
 
   // Routing for API
-  apiRoutes(app, collection);
+  apiRoutes(app, db);
 
   // 404 Not Found Middleware
   app.use((req, res, next) => {
