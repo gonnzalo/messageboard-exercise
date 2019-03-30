@@ -1,19 +1,18 @@
 /*
-*
-*
-*       Complete the API routing below
-*
-*
-*/
+ *
+ *
+ *       Complete the API routing below
+ *
+ *
+ */
 
-'use strict';
+"use strict";
 
-var expect = require('chai').expect;
+let {expect} = require('chai');
+const { ObjectID } = require("mongodb");
 
-module.exports = function (app) {
-  
-  app.route('/api/threads/:board');
-    
-  app.route('/api/replies/:board');
+module.exports = (app, collection) => {
+  app.route("/api/threads/:board");
 
+  app.route("/api/replies/:board");
 };
