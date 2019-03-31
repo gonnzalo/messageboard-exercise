@@ -44,7 +44,8 @@ module.exports = (app, db) => {
     })
 
     .post((req, res) => {
-      const { board, text, delete_password } = req.body;
+      const { board } = req.params;
+      const { text, delete_password } = req.body;
       const thread = {
         text,
         created_on: new Date(),
@@ -72,7 +73,7 @@ module.exports = (app, db) => {
           { $set: { reported: true } }
         )
         .then(() => {
-          res.send("success");
+          res.send("reported");
         })
         .catch(err =>
           console.error(`Failed to find and update document: ${err}`)
@@ -117,13 +118,14 @@ module.exports = (app, db) => {
         )
         .toArray()
         .then(items => {
-          return res.send(items);
+          return res.send(items[0]);
         })
         .catch(err => console.error(`Failed to find documents: ${err}`));
     })
 
     .post((req, res) => {
-      const { board, text, delete_password, thread_id } = req.body;
+      const { board } = req.params;
+      const { text, delete_password, thread_id } = req.body;
       const reply = {
         _id: ObjectId(),
         text,
@@ -159,7 +161,7 @@ module.exports = (app, db) => {
           { $set: { "replies.$.reported": true } }
         )
         .then(() => {
-          res.send("success");
+          res.send("reported");
         })
         .catch(err =>
           console.error(`Failed to find and update document: ${err}`)
